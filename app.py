@@ -4,6 +4,10 @@ from modifieur import Modifieur
 from pymongo import MongoClient
  
 client = MongoClient('localhost', 27017)
+
+
+client.drop_database('imdb')
+
 db = client.imdb
 collection = db.titles
 
@@ -23,8 +27,11 @@ while lines:
     for line in lines:
         line_number += 1
         
+        
+        
         line["_id"] = line['tconst']
         line["genres"] = Modifieur.spliter(line['genres'])
+        line["isAdult"] = Modifieur.integer(line['isAdult'])
         line["startYear"] = Modifieur.integer(line["startYear"]) 
         line["endYear"] = Modifieur.integer(line["endYear"]) 
         line["runtimeMinutes"] = Modifieur.integer(line["runtimeMinutes"]) 
