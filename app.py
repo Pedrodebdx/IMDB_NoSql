@@ -2,17 +2,20 @@ from tsv import TSV
 from modifieur import Modifieur
 
 from pymongo import MongoClient
- 
+
+# connection à mongo 
 client = MongoClient('localhost', 27017)
-
-
+# suppression de la base avant nouvel import
 client.drop_database('imdb')
-
+#création de la base de données imdb
 db = client.imdb
+#création de la collection 'titles'
 collection = db.titles
 
 
 
+
+# j'instensie la classe TSV
 tsv = TSV('./title.basics.tsv/data.tsv')
 lines = []
 batch_number = 1
@@ -28,9 +31,11 @@ while lines:
         line_number += 1
         
         
-        
+        # tconst devient l'identifiant
         line["_id"] = line['tconst']
+        # genre passe par la class spliter pour etre splité
         line["genres"] = Modifieur.spliter(line['genres'])
+        # adult passe dans la class int pour entre soit int soit nan
         line["isAdult"] = Modifieur.integer(line['isAdult'])
         line["startYear"] = Modifieur.integer(line["startYear"]) 
         line["endYear"] = Modifieur.integer(line["endYear"]) 
